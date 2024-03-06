@@ -39,6 +39,7 @@
     SELECT *
     FROM `teachers`
     WHERE `phone` is NULL; 
+
 ---------------------------------------------------------------------------------------------------------------------
 
 // 1. Contare quanti iscritti ci sono stati ogni anno
@@ -57,3 +58,39 @@
     SELECT `department_id`, COUNT( * )
     FROM `degrees`
     GROUP BY `department_id`;
+
+---------------------------------------------------------------------------------------------------------------------
+
+// 1. Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
+
+// 2. Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
+// 3. Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
+// 4. Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il relativo dipartimento, in ordine alfabetico per cognome e nome
+// 5. Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
+    SELECT *
+    FROM degrees
+    JOIN courses
+    ON degrees.id = courses.degree_id
+    JOIN course_teacher 
+    ON courses.id = course_teacher.course_id
+    JOIN teachers
+    ON teachers.id = course_teacher.teacher_id;
+// 6. Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
+    SELECT DISTINCT
+    `teachers`.`name`,
+    `teachers`.`surname`,
+    `teachers`.`phone`,
+    `teachers`.`email`,
+    `teachers`.`office_address`,
+    `teachers`.`office_number`
+    
+    FROM 
+    `teachers`
+    JOIN `course_teacher` ON `teachers`.`id` = `course_teacher`.`teacher_id`
+    JOIN `courses` ON `course_teacher`.`course_id` = `courses`.`id`
+    JOIN `degrees` ON `courses`.`degree.id` = `degrees`.`id`
+    JOIN `departments` ON `degrees`.`department_id` = `departments`.`id`
+    
+    WHERE 
+    `departments`.`name` = 'Dipartimento di Matematica';
+    
